@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Músicas</title>
+    <link rel="stylesheet" href="css.css">
+</head>
+<body>
+    <div class="container">
+        <div class="formulario">
+        <h1>Gerenciador de Músicas</h1>
+
+        <h2>Criar Nova Música</h2>
+        <form id="form-musica">
+            <input type="text" id="nome" placeholder="Nome da música" required>
+            <input type="number" id="ano" placeholder="Ano de lançamento" required>
+            <input type="text" id="artista" placeholder="Artista" required>
+            <input type="text" id="genero" placeholder="Gênero" required>
+            <input type="text" id="album" placeholder="Álbum" required>
+            <input type="number" id="duracao" placeholder="Duração (em minutos)" required>
+            <input type="text" id="idPlaylist" placeholder="ID da Playlist" required>
+            <button type="submit">Criar Música</button>
+        </form>
+
+        <h2>Listar Músicas</h2>
+        <button id="listar-musicas">Listar Músicas</button>
+        <div id="lista-musicas"></div>
+    </div>
+    </div>
+
+    <script>
+        document.getElementById('form-musica').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const nome = document.getElementById('nome').value;
+            const ano = document.getElementById('ano').value;
+            const artista = document.getElementById('artista').value;
+            const genero = document.getElementById('genero').value;
+            const album = document.getElementById('album').value;
+            const duracao = document.getElementById('duracao').value;
+            const idPlaylist = document.getElementById('idPlaylist').value;
+
+            const resposta = await fetch('/musica', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ nome, ano, artista, genero, album, duracao, idPlaylist }),
+            });
+
+            const dados = await resposta.json();
+            alert(dados.mensagem);
+        });
+
+        document.getElementById('listar-musicas').addEventListener('click', async () => {
+            const resposta = await fetch('/musica');
+            const musicas = await resposta.json();
+            const listaMusicas = document.getElementById('lista-musicas');
+            listaMusicas.innerHTML = '';
+
+            musicas.forEach(musica => {
+                const item = document.createElement('div');
+                item.innerHTML = `<strong>${musica.nome}</strong> - ${musica.artista} (${musica.ano})`;
+                listaMusicas.appendChild(item);
+            });
+        });
+    </script>
+</body>
+</html>
