@@ -74,8 +74,7 @@ app.put("/musica/:id", async (req, res) => {
             idPlaylist
         );
         if (musicaAtualizada) {
-            res
-                .status(200)
+            res.status(200)
                 .json({
                     mensagem: "Música atualizada com sucesso",
                     musica: musicaAtualizada,
@@ -84,8 +83,7 @@ app.put("/musica/:id", async (req, res) => {
             res.status(404).json({ mensagem: "Música não encontrada" });
         }
     } catch (erro) {
-        res
-            .status(500)
+        res.status(500)
             .json({ mensagem: "Erro ao atualizar música", erro: erro.mensagem });
     }
 });
@@ -135,7 +133,7 @@ app.delete("/musica/:id", async (req, res) => {
 });
 
 const esquemaPlaylist = new mongoose.Schema({
-    nome: { type: String, require: true },
+    nome: { type: String, required: true },
 })
 
 const Playlist = mongoose.model("Playlist", esquemaPlaylist)
@@ -181,11 +179,11 @@ app.get("/playlist", async (req, res) => {
     }
 });
 
-async function atualizarPlaylist(id, nome, matricula, curso, ano) {
+async function atualizarPlaylist(id, nome) {
     try {
         const playlistAtualizado = await Playlist.findByIdAndUpdate(
             id,
-            { nome, matricula, curso, ano },
+            { nome },
             { new: true, runValidators: true }
         );
         return playlistAtualizado;
@@ -198,32 +196,31 @@ async function atualizarPlaylist(id, nome, matricula, curso, ano) {
 app.put("/playlist/:id", async (req, res) => {
     try {
         const { id } = req.params;
-        const { nome, matricula, curso, ano } = req.body;
+        const { nome } = req.body;
         const playlistAtualizado = await atualizarPlaylist(
             id,
-            nome,
-            matricula,
-            curso,
-            ano
+            nome
         );
         if (playlistAtualizado) {
             res.status(200).json({
-                mensagem: "Playlist atualizado com sucesso",
+                mensagem: "Playlist atualizada com sucesso",
                 playlist: playlistAtualizado,
             });
         } else {
-            res.status(404).json({ mensagem: "Playlist não encontrado" });
+            res.status(404).json({ mensagem: "Playlist não encontrada" });
         }
     } catch (erro) {
         res.status(500)
-            .json({ mensagem: "Erro ao atualizar playlist", erro: erro.message });
+            .json({ mensagem: "Erro ao atualizar playlist", erro: erro.mensagem });
     }
 });
 
 async function deletarPlaylist(id) {
     try {
-        const playlistsDeletado = await Playlist.findByIdAndDelete(id);
-        return playlistsDeletado;
+        await Musica.deleteMany({ idPlaylist: id });
+        
+        const playlistDeletado = await Playlist.findByIdAndDelete(id);
+        return playlistDeletado;
     } catch (erro) {
         console.error("Erro ao deletar playlists:", erro);
         throw erro;
@@ -236,9 +233,9 @@ app.delete("/playlist/:id", async (req, res) => {
         const playlistDeletado = await deletarPlaylist(id);
         if (playlistDeletado) {
             res.status(200)
-               .json({ mensagem: "Playlist deletado com sucesso", playlist: playlistDeletado });
+               .json({ mensagem: "Playlist e suas músicas deletadas com sucesso", playlist: playlistDeletado });
         } else {
-            res.status(404).json({ mensagem: "Playlist não encontrado" });
+            res.status(404).json({ mensagem: "Playlist não encontrada" });
         }
     } catch (erro) {
         res.status(500)
