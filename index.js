@@ -37,7 +37,7 @@ app.post("/musica", async (req, res) => {
         const novaMusica = await criarMusica(nome, ano, artista, genero, album, duracao, idPlaylist);
         res
             .status(201)
-            .json({ mensagem: "Música criado com sucesso", musica: novaMusica });
+            .json({ mensagem: "Música criada com sucesso", musica: novaMusica });
     } catch (erro) {
         res
             .status(500)
@@ -103,7 +103,7 @@ app.get("/musica", async (req, res) => {
         res.status(200).json(musicas)
     } catch (error) {
         res.status(500)
-            .json({ mensagem: "erro ao obter os livros", erro: error.message })
+            .json({ mensagem: "erro ao obter as músicas", erro: error.message })
     }
 })
 
@@ -153,7 +153,7 @@ app.post("/playlist", async (req, res) => {
         const { nome } = req.body;
         const novaPlaylist = await criarPlaylists(nome);
         res.status(201)
-            .json({ mensagem: "Playlist criado com sucesso", playlist: novaPlaylist });
+            .json({ mensagem: "Playlist criada com sucesso", playlist: novaPlaylist });
     } catch (erro) {
         res.status(500)
             .json({ mensagem: "Erro ao criar playlist", erro: erro.mensagem });
@@ -222,7 +222,7 @@ async function deletarPlaylist(id) {
         const playlistDeletado = await Playlist.findByIdAndDelete(id);
         return playlistDeletado;
     } catch (erro) {
-        console.error("Erro ao deletar playlists:", erro);
+        console.error("Erro ao deletar playlist:", erro);
         throw erro;
     }
 }
