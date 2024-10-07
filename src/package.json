@@ -1,0 +1,25 @@
+{
+  "name": "beatflow",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "api de música e playlist",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node --watch ./src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alex30pro/beatflow"
+  },
+  "author": "Alex",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Alex30pro/beatflow/issues"
+  },
+  "homepage": "https://github.com/Alex30pro/beatflow#readme",
+  "dependencies": {
+    "express": "^4.21.0",
+    "mongoose": "^8.7.0"
+  }
+}
