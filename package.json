@@ -1,7 +1,6 @@
 {
   "name": "beatflow",
   "version": "1.0.0",
-  "type": "module",
   "description": "api de música e playlist",
   "main": "app.js",
   "scripts": {
